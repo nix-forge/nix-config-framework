@@ -1,4 +1,9 @@
-{ system, targetKind, targetName, ... }:
+{
+  system,
+  targetKind,
+  targetName,
+  ...
+}:
 {
   imports =
     assert system == "aarch64-darwin";

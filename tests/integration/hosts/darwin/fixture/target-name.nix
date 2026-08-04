@@ -1,5 +1,4 @@
-{ targetName, ... }:
-{
+{ targetName, ... }: {
   assertions = [
     {
       assertion = targetName == "fixture";
