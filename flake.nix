@@ -42,7 +42,7 @@
           assert testPasses;
           assert embeddedHomeTargetKind == "home";
           assert nixpkgs.lib.elem fixtureNushellPath registeredDarwinShells;
-          pkgs.runCommand "discovery" { } "touch $out";
+          pkgs.runCommandNoCC "discovery" { } "touch $out";
       };
 
       flake = {
