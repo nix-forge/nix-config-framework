@@ -10,7 +10,7 @@ that selects features.
 Add the framework to a flake and make its core inputs follow your pins:
 
 ```nix
-inputs.nix-config-framework.url = "github:IanHollow/nix-config-framework/v0.1.0";
+inputs.nix-config-framework.url = "github:nix-forge/nix-config-framework/v0.1.0";
 inputs.nix-config-framework.inputs.nixpkgs.follows = "nixpkgs";
 inputs.nix-config-framework.inputs.flake-parts.follows = "flake-parts";
 inputs.nix-config-framework.inputs.home-manager.follows = "home-manager";
