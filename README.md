@@ -86,3 +86,7 @@ compatibility aliases `nixosModules`, `homeModules`, and `darwinModules`, as
 well as `nixosConfigurations`, `darwinConfigurations`, and `homeConfigurations`.
 `config.nixConfigFramework.inventory` is available to other flake-parts modules
 in the same flake for extensions such as secret indexing.
+
+The default system set is `x86_64-linux`, `aarch64-linux`, and `aarch64-darwin`.
+Intel macOS consumers should pin a nixpkgs release that still supports
+`x86_64-darwin` and override the flake-parts `systems` option explicitly.

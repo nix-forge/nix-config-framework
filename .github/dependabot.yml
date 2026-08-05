@@ -1,0 +1,48 @@
+version: 2
+updates:
+  - package-ecosystem: "nix"
+    directories:
+      - "/"
+      - "/flake/dev"
+    schedule:
+      interval: "weekly"
+      day: monday
+      time: "05:30"
+      timezone: America/Los_Angeles
+    open-pull-requests-limit: 10
+    rebase-strategy: auto
+    labels:
+      - dependencies
+      - nix
+    commit-message:
+      prefix: build(deps)
+      include: scope
+    groups:
+      nix-inputs-minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: monday
+      time: "06:00"
+      timezone: America/Los_Angeles
+    open-pull-requests-limit: 10
+    rebase-strategy: auto
+    labels:
+      - dependencies
+      - github_actions
+    commit-message:
+      prefix: build(deps)
+      include: scope
+    groups:
+      github-actions-minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
