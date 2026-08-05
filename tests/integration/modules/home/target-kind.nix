@@ -1,6 +1,13 @@
-{ system, targetKind, ... }: {
+{
+  system,
+  targetKind,
+  targetName,
+  ...
+}:
+{
   imports =
     assert system == "aarch64-darwin";
+    assert targetName == "fixture";
     [ ];
 
   home = {

@@ -29,13 +29,25 @@
       fixtureNushellPath = "/run/current-system/sw/bin/${fixtureNushell.meta.mainProgram}";
       registeredDarwinShells = map toString integrationFixture.darwinConfigurations.fixture.config.environment.shells;
     in
-    {
-      lib = import ./lib { inherit (nixpkgs) lib; };
-      flakeModules.default = import ./flake-module.nix;
-      checks.x86_64-linux.discovery =
-        assert testPasses;
-        assert embeddedHomeTargetKind == "home";
-        assert nixpkgs.lib.elem fixtureNushellPath registeredDarwinShells;
-        nixpkgs.legacyPackages.x86_64-linux.runCommandNoCC "discovery" { } "touch $out";
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [ ./flake/partitions.nix ];
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "aarch64-darwin"
+      ];
+
+      perSystem = { pkgs, ... }: {
+        checks.discovery =
+          assert testPasses;
+          assert embeddedHomeTargetKind == "home";
+          assert nixpkgs.lib.elem fixtureNushellPath registeredDarwinShells;
+          pkgs.runCommand "discovery" { } "touch $out";
+      };
+
+      flake = {
+        lib = import ./lib { inherit (nixpkgs) lib; };
+        flakeModules.default = import ./flake-module.nix;
+      };
     };
 }

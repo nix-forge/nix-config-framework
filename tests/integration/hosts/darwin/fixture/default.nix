@@ -1,7 +1,10 @@
 { inputs, ... }: {
   system = "aarch64-darwin";
   hostName = "fixture";
-  modules = [ { system.stateVersion = 6; } ];
+  modules = [
+    { system.stateVersion = 6; }
+    ./target-name.nix
+  ];
 
   homes.alice = {
     config = "alice@fixture";

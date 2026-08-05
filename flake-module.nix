@@ -66,6 +66,7 @@ let
     // {
       inherit inputs self system;
       configName = name;
+      targetName = target.name;
     }
     // extra;
 
@@ -86,6 +87,7 @@ let
         // {
           inherit (home) system;
           configName = homeId home;
+          targetName = home.name;
         };
       home = {
         username = lib.mkForce username;
@@ -145,6 +147,7 @@ let
             inherit inputs self;
             inherit (host) system;
             configName = host.name;
+            targetName = host.name;
           }
           // (host.homeManagerExtraSpecialArgs or { });
         inherit users;
@@ -239,7 +242,6 @@ in
     systems = lib.mkDefault [
       "x86_64-linux"
       "aarch64-linux"
-      "x86_64-darwin"
       "aarch64-darwin"
     ];
     nixConfigFramework.inventory = {
