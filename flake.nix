@@ -28,6 +28,7 @@
       fixtureNushell = inputs.nixpkgs.legacyPackages.aarch64-darwin.nushell;
       fixtureNushellPath = "/run/current-system/sw/bin/${fixtureNushell.meta.mainProgram}";
       registeredDarwinShells = map toString integrationFixture.darwinConfigurations.fixture.config.environment.shells;
+      standaloneHomes = integrationFixture.homeConfigurations;
     in
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [ ./flake/partitions.nix ];
@@ -42,6 +43,8 @@
           assert testPasses;
           assert embeddedHomeTargetKind == "home";
           assert nixpkgs.lib.elem fixtureNushellPath registeredDarwinShells;
+          assert !(standaloneHomes ? "alice@fixture");
+          assert standaloneHomes ? "bob@standalone";
           pkgs.runCommandNoCC "discovery" { } "touch $out";
       };
 

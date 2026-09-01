@@ -81,6 +81,11 @@ homes.alice = {
 };
 ```
 
+Home targets are exported as standalone `homeConfigurations` by default. Set
+`standalone = false` on a home target when it is intended to run only through
+an attached NixOS or nix-darwin host. This is appropriate for profiles that
+depend on host-managed services or privileged volatile secret storage.
+
 The flake exports typed `flake.modules.{nixos,homeManager,darwin}` and the
 compatibility aliases `nixosModules`, `homeModules`, and `darwinModules`, as
 well as `nixosConfigurations`, `darwinConfigurations`, and `homeConfigurations`.
