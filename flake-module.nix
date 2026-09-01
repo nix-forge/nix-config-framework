@@ -265,7 +265,14 @@ in
       inherit nixosModules;
       inherit homeModules;
       inherit darwinModules;
-      homeConfigurations = lib.mapAttrs (_: mkStandaloneHome) homesById;
+      # A profile attached to a NixOS or nix-darwin host can depend on
+      # host-provided services or privileged runtime storage. Do not expose
+      # those profiles as independently switchable, where such guarantees
+      # would silently disappear. Homes remain standalone by default for
+      # backwards compatibility.
+      homeConfigurations = lib.mapAttrs (_: mkStandaloneHome) (
+        lib.filterAttrs (_: home: (home.standalone or true)) homesById
+      );
       nixosConfigurations = lib.mapAttrs (_: mkHost "nixos" inputs.nixpkgs.lib.nixosSystem) nixosHosts;
       darwinConfigurations = lib.mapAttrs (
         _: mkHost "darwin" inputs.nix-darwin.lib.darwinSystem
