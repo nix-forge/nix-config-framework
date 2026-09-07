@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/0";
     home-manager.url = "github:nix-community/home-manager";
     nix-darwin.url = "github:nix-darwin/nix-darwin";
 
@@ -14,6 +15,20 @@
   outputs =
     inputs@{ nixpkgs, ... }:
     let
+      exportSchema = what: valid: {
+        version = 1;
+        doc = "Validate the shape of exported ${what}; behavioral checks are in checks.";
+        inventory = output: {
+          evalChecks.isAttributeSet = builtins.isAttrs output;
+          children = builtins.mapAttrs (_: value: {
+            inherit what;
+            evalChecks.isValidExport = valid value;
+          }) output;
+        };
+      };
+      moduleSchema = exportSchema "Nix module" (
+        value: builtins.isFunction value || builtins.isAttrs value
+      );
       testPasses = import ./tests { inherit (nixpkgs) lib; };
       integrationFixture = inputs.flake-parts.lib.mkFlake { inherit inputs; } {
         systems = [ "aarch64-darwin" ];
@@ -45,10 +60,14 @@
           assert nixpkgs.lib.elem fixtureNushellPath registeredDarwinShells;
           assert !(standaloneHomes ? "alice@fixture");
           assert standaloneHomes ? "bob@standalone";
-          pkgs.runCommandNoCC "discovery" { } "touch $out";
+          pkgs.runCommand "discovery" { } "touch $out";
       };
 
       flake = {
+        schemas = inputs.flake-schemas.exportedSchemas // {
+          flakeModules = moduleSchema;
+          lib = exportSchema "library function" builtins.isFunction;
+        };
         lib = import ./lib { inherit (nixpkgs) lib; };
         flakeModules.default = import ./flake-module.nix;
       };
