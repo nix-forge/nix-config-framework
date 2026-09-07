@@ -3,13 +3,15 @@
 
   perSystem = { config, pkgs, ... }: {
     pre-commit = {
-      check.enable = pkgs.stdenv.hostPlatform.isDarwin;
+      check.enable = true;
       settings = {
         package = pkgs.prek;
         hooks = {
           treefmt = {
             enable = true;
             name = "treefmt";
+            # treefmt schedules its formatters; avoid many concurrent wrappers.
+            require_serial = true;
             pass_filenames = true;
             entry = "${lib.getExe config.treefmt.build.wrapper} --no-cache";
           };
@@ -48,14 +50,12 @@
           flake-checker.enable = true;
           typos = {
             enable = true;
-            settings.configPath = ".typos.toml";
+            # The upstream hook's generated empty [default] table overrides configPath.
+            entry = "${lib.getExe pkgs.typos} --config .typos.toml --force-exclude";
           };
           zizmor = {
             enable = true;
-            args = [
-              "--persona=pedantic"
-              "--min-severity=medium"
-            ];
+            args = [ "--persona=pedantic" ];
           };
           gitleaks = {
             enable = true;
@@ -68,7 +68,9 @@
           nix-flake-check = {
             enable = true;
             name = "nix flake check (local system)";
-            entry = "${lib.getExe pkgs.nix} flake check";
+            # Use the Nix installation that supplies the daemon and its settings.
+            # Injecting nixpkgs' CLI rejects Determinate's schemas/settings.
+            entry = "nix flake check";
             always_run = true;
             pass_filenames = false;
             stages = [ "pre-push" ];
