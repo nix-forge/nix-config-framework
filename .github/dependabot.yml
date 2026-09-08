@@ -40,3 +40,6 @@ updates:
       github-actions-minor-and-patch:
         patterns:
           - "*"
+        update-types:
+          - minor
+          - patch
