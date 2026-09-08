@@ -2,7 +2,10 @@
 
 Passing Dependabot PRs enter the protected main merge queue after workflow
 completion. The package updater is also eligible in nixpkgs-personal.
-The reconciler reads API metadata and executes only its default branch script.
+The reconciler reads API metadata and executes its pinned shared action.
+It owns automatic admission; no separate auto-merge workflow is needed.
+Changes under `.github/`, `actions/`, `scripts/` and `workflow-templates/`
+require maintainer admission, including files renamed out of those paths.
 Forks, drafts, failing checks, missing checks, changed heads and GitHub review
 requirements cannot be bypassed by queue admission.
 
@@ -22,7 +25,8 @@ Required checks and merge queue rules remain enforced. CI runs on PRs and merge
 groups; it does not repeat the same full build after a successful queued merge.
 CodeQL retains its main-branch scan, and documentation retains its publish job.
 
-Run regression tests with `python3 -m unittest discover -s .github/tests`.
+Shared queue regression tests live in [nix-forge/ci](https://github.com/nix-forge/ci).
+Run repository-specific selection tests separately when present.
 
 macOS jobs use the supported macos-26 image. nix-seal retains its legacy
 macos-14 matrix labels only as required-check identifiers; runs-on selects
@@ -36,3 +40,14 @@ It waits for the full workflow set, verifies the latest attempt and live queue
 SHA, and never reports skipped or missing jobs as successful. A newer incomplete
 attempt invalidates earlier adapter statuses. Required contexts and the expected
 GitHub Actions app remain unchanged.
+
+## Cache pilot
+
+Two same-revision hosted benchmark runs on September 8, 2026 passed. In the
+[cold run](https://github.com/nix-forge/nix-config-framework/actions/runs/34249600956),
+the cached job took 39 seconds versus 26 without caching. In the
+[warm run](https://github.com/nix-forge/nix-config-framework/actions/runs/34249747026),
+the cached job took 27 seconds versus 29 without caching. Restoring the cache
+reduced the discovery workload from 14 to 4 seconds, but setup and cache handling
+consumed most of the difference. This small sample does not justify enabling
+store caching by default. Keep the manual benchmark for future workload changes.
