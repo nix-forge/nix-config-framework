@@ -51,3 +51,13 @@ the cached job took 27 seconds versus 29 without caching. Restoring the cache
 reduced the discovery workload from 14 to 4 seconds, but setup and cache handling
 consumed most of the difference. This small sample does not justify enabling
 store caching by default. Keep the manual benchmark for future workload changes.
+
+## Discovered lockfile checks
+
+The lockfile matrix discovers tracked nested flakes. Require the stable
+`Flake lock health` aggregate, which waits for the entire matrix and fails when
+any matrix result is failed, cancelled or skipped. New lockfiles therefore become
+required automatically, and removing a partition does not leave a required check
+named after a deleted file. Existing per-lockfile requirements migrate to this
+aggregate only after it passes PR and native merge-group validation. Other
+required checks and their GitHub Actions app binding remain unchanged.
