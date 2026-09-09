@@ -227,7 +227,7 @@ in
       description = "Arguments supplied to every generated NixOS, nix-darwin, and Home Manager module.";
     };
     extraSpecialArgsFor = lib.mkOption {
-      type = lib.types.raw;
+      type = lib.types.addCheck lib.types.raw builtins.isFunction;
       default = _: { };
       description = "Function receiving { kind, target } and returning target-specific special arguments.";
     };

@@ -9,14 +9,8 @@ let
     pathExists
     readDir
     ;
-  inherit (lib)
-    hasPrefix
-    hasSuffix
-    removeSuffix
-    sort
-    ;
+  inherit (lib) hasPrefix hasSuffix removeSuffix;
 
-  sorted = attrs: sort builtins.lessThan (attrNames attrs);
   visible = name: !(hasPrefix "." name) && name != "archive";
   entries = path: if pathExists path then readDir path else { };
   nixFile = name: type: type == "regular" && hasSuffix ".nix" name && visible name;
@@ -26,9 +20,8 @@ let
     values:
     let
       names = map (value: value.name) values;
-      duplicate = lib.findFirst (
-        name: builtins.length (filter (candidate: candidate == name) names) > 1
-      ) null names;
+      grouped = lib.groupBy (value: value.name) values;
+      duplicate = lib.findFirst (name: builtins.length grouped.${name} > 1) null names;
     in
     if duplicate != null then
       throw "nix-config-framework: duplicate generated selector '${duplicate}'"
@@ -50,7 +43,7 @@ let
           recursiveNixFiles child
         else
           [ ]
-      ) (sorted (entries path))
+      ) (attrNames (entries path))
     );
 
   aggregate = paths: { imports = paths; };
@@ -89,7 +82,7 @@ let
               ++ go child (prefix ++ [ name ])
             else
               [ ]
-          ) (sorted (entries path))
+          ) (attrNames (entries path))
         );
     in
     go root [ ];
@@ -196,7 +189,7 @@ let
           ]
         else
           [ ]
-      ) (sorted (entries root))
+      ) (attrNames (entries root))
     );
 
   targetModules = spec: (spec.modules or [ ]) ++ spec.localModules;
