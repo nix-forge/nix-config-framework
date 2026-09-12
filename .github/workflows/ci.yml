@@ -102,6 +102,12 @@ jobs:
         uses: nix-forge/ci/actions/flake-checks@78ee44eba73081183f51c85194c6dd9382feb60f # v2.5.0
         with:
           system: ${{ matrix.system }}
+      - name: Build the public consumer with its locked framework
+        working-directory: examples/minimal
+        run: nix flake check --no-update-lock-file --show-trace
+      - name: Build the public consumer against this framework revision
+        working-directory: examples/minimal
+        run: nix flake check --override-input nix-config-framework ../.. --no-write-lock-file --show-trace
   queue-completion:
     continue-on-error: true
     name: Queue completion callback

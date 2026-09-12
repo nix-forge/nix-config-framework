@@ -5,6 +5,11 @@ NixOS, Home Manager, and nix-darwin configurations. It discovers reusable
 features from paths and leaves each target's `default.nix` as the single place
 that selects features.
 
+Start with the [complete minimal consumer](docs/getting-started.md), then use
+the reference below. Read [compatibility and upgrades](docs/compatibility.md)
+before changing inputs. For one small home profile, ordinary module imports
+may be all you need.
+
 ## Use it
 
 Add the framework to a flake and make its core inputs follow your pins:
@@ -95,3 +100,10 @@ in the same flake for extensions such as secret indexing.
 The default system set is `x86_64-linux`, `aarch64-linux`, and `aarch64-darwin`.
 Intel macOS consumers should pin a nixpkgs release that still supports
 `x86_64-darwin` and override the flake-parts `systems` option explicitly.
+
+## Tests
+
+`nix flake check` runs the named discovery contracts and integration fixture.
+The discovery check forces the fixture's module assertions as well as checking
+selected outputs. A failed target-name assertion therefore fails evaluation
+without building a Darwin system on Linux.

@@ -44,6 +44,9 @@
       fixtureNushellPath = "/run/current-system/sw/bin/${fixtureNushell.meta.mainProgram}";
       registeredDarwinShells = map toString integrationFixture.darwinConfigurations.fixture.config.environment.shells;
       standaloneHomes = integrationFixture.homeConfigurations;
+      failedAssertions = builtins.filter (
+        entry: !entry.assertion
+      ) integrationFixture.darwinConfigurations.fixture.config.assertions;
     in
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [ ./flake/partitions.nix ];
@@ -56,6 +59,10 @@
       perSystem = { pkgs, ... }: {
         checks.discovery =
           assert testPasses;
+          assert nixpkgs.lib.assertMsg (failedAssertions == [ ]) (
+            "Integration fixture assertions failed: "
+            + nixpkgs.lib.concatMapStringsSep "; " (entry: entry.message) failedAssertions
+          );
           assert embeddedHomeTargetKind == "home";
           assert nixpkgs.lib.elem fixtureNushellPath registeredDarwinShells;
           assert !(standaloneHomes ? "alice@fixture");
