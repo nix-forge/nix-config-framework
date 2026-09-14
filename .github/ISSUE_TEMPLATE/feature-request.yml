@@ -1,0 +1,29 @@
+name: Feature request
+description: Propose an improvement to the framework contract or consumer experience.
+title: "[feature] "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What consumer need is not met by the current framework?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed contract or interface
+      description: Describe the desired option, module, input, or behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility and migration impact
+      description: Note affected NixOS, nix-darwin, or Home Manager consumers and any migration path.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
