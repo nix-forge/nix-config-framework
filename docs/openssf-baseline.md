@@ -12,6 +12,11 @@ tag series. A release is created from reviewed main with an immutable unique
 tag and a compatibility entry in [docs/compatibility.md](compatibility.md).
 The project publishes source, not compiled binary assets.
 
+This repository is part of the related projects listed in the
+[nix-forge project security contract](https://github.com/nix-forge/.github/blob/main/PROJECTS.md).
+Related repositories enforce the same minimum security contract or a stricter
+one for their own code and release surfaces.
+
 ## Change and build controls
 
 Every commit must carry a matching Signed-off-by trailer. The DCO file defines
