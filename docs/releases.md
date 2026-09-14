@@ -7,15 +7,31 @@ builds, and focused consumer tests.
 
 ## Candidate checklist
 
-1. Update the release notes with selector, exported-output, compatibility, and
-  migration changes.
+1. Create `docs/releases/v0.1.x.md` for the exact tag. It must contain a
+  `## Changelog` section with functional and security changes, affected
+  consumers, migration notes, and the checks and support window for the
+  release. The release workflow rejects a tag without this file.
 2. Run nix flake check and build the documentation site.
 3. Run the minimal public consumer against the candidate commit and record the
   tested Nixpkgs, Home Manager, nix-darwin, and flake-parts revisions.
 4. Inspect generated documentation and a clean checkout for private paths,
   credentials, and generated secrets.
 5. Tag the exact reviewed commit. Do not tag a dirty working tree.
-6. Verify the tag and source commit before announcing the release.
+6. Verify the release using the commands below.
+
+## Verification
+
+For example:
+
+```console
+gh release download v0.1.x --repo nix-forge/nix-config-framework --dir release-v0.1.x
+(cd release-v0.1.x && sha256sum -c nix-config-framework-v0.1.x.tar.gz.sha256)
+gh attestation verify release-v0.1.x/nix-config-framework-v0.1.x.tar.gz \
+  --repo nix-forge/nix-config-framework
+```
+
+The expected release identity is the `nix-forge/nix-config-framework`
+repository and its reviewed `.github/workflows/release.yml` workflow.
 
 The project publishes source, not opaque compiled assets. Release notes name
 the actor and process, list public module interfaces, explain security impact,
