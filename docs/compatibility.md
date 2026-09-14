@@ -2,7 +2,7 @@
 
 The consumer owns its Nixpkgs, Home Manager, nix-darwin and flake-parts pins. Set
 the framework's corresponding inputs to `follows` those inputs, as shown in the
-[minimal consumer](../examples/minimal/flake.nix). Commit the consumer lock file.
+[minimal consumer](https://github.com/nix-forge/nix-config-framework/blob/main/examples/minimal/flake.nix). Commit the consumer lock file.
 `follows` shares a pin; it does not make incompatible upstream versions compatible.
 
 ## What is checked
@@ -19,7 +19,7 @@ the framework's corresponding inputs to `follows` those inputs, as shown in the
 CI runs the public example with its lock file and also overrides the framework
 input with the revision under test. This separates a reproducible published
 consumer from testing whether framework changes preserve that consumer.
-Inspect the [CI workflow](../.github/workflows/ci.yml) and its actual run results
+Inspect the [CI workflow](https://github.com/nix-forge/nix-config-framework/blob/main/.github/workflows/ci.yml) and its actual run results
 before treating a revision as validated. Configured coverage is not a statement
 that every historical revision passed.
 
@@ -37,7 +37,7 @@ instructions call for a deliberate change.
 
 The minimal example uses the published framework revision
 `11e4d9dfe816b9855ae9de8318734059d616d3a1`. Its exact upstream pins live in
-[its lock file](../examples/minimal/flake.lock); they are the reproducible baseline
+[its lock file](https://github.com/nix-forge/nix-config-framework/blob/main/examples/minimal/flake.lock); they are the reproducible baseline
 for the guide, not a claim of support for arbitrary future upstream revisions.
 
 When upgrading the framework:

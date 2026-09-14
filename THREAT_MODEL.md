@@ -30,5 +30,13 @@ receive repository secrets.
 | CI executes untrusted input with write access | Empty default permissions, job scopes, pinned actions, and no fork secrets |
 | A dependency introduces a known flaw | Lockfile review, dependency review, CodeQL, and release gating |
 
+## Assessment cadence
+
+Before each source release, and whenever discovery, exported interfaces, or a
+trust boundary changes, maintainers review the framework's attack surface,
+external Nix and GitHub interfaces, and the critical paths above. The review
+records changed threats, required tests, and any release limitation in the
+pull request or release notes.
+
 Review this model when discovery, exported interfaces, dependency trust, CI, or
 release behavior changes.

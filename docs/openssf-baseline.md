@@ -45,19 +45,24 @@ impact, public interfaces, security changes, release actor and workflow,
 verification method, threat-model review, and support window. Consumers verify
 the tag and source commit. The project does not upload opaque compiled assets.
 
+The [dependency management policy](dependency-management.md) defines the
+approved dependency sources, lockfile review, automated SCA gates, and release
+exceptions. The [secret management policy](secret-management.md) defines how
+consumer and release credentials are stored, accessed, rotated, and revoked.
+
 ## Governance and vulnerability response
 
-The maintainers listed in [GOVERNANCE.md](../GOVERNANCE.md) own repository
+The maintainers listed in [GOVERNANCE.md](https://github.com/nix-forge/nix-config-framework/blob/main/GOVERNANCE.md) own repository
 administration, Actions secrets, Pages, dependency policy, and releases.
 Sensitive access is granted after review of the contributor's history and
 intended responsibility. New maintainers receive the narrowest role needed.
 
-Report vulnerabilities through [SECURITY.md](../SECURITY.md) or GitHub private
+Report vulnerabilities through [SECURITY.md](https://github.com/nix-forge/nix-config-framework/blob/main/SECURITY.md) or GitHub private
 vulnerability reporting. The maintainer acknowledges reports within three
 business days and provides an initial assessment within seven days. Public
-disclosure follows a fix or documented mitigation. [security/vex.json](../security/vex.json)
+disclosure follows a fix or documented mitigation. [security/vex.json](https://github.com/nix-forge/nix-config-framework/blob/main/security/vex.json)
 records reviewed non-affectability statements. Support rules are in
-[SUPPORT.md](../SUPPORT.md) and compatibility policy.
+[SUPPORT.md](https://github.com/nix-forge/nix-config-framework/blob/main/SUPPORT.md) and compatibility policy.
 
 ## Control evidence
 
@@ -66,13 +71,13 @@ records reviewed non-affectability statements. Support rules are in
 | Least-privilege CI and trusted inputs | Empty default permissions, job scopes, pinned actions, quoted inputs, and no fork secrets |
 | Releases and change logs | [docs/compatibility.md](compatibility.md) and source tags |
 | Dependencies | flake.lock, dependency review, and CodeQL |
-| Build and test instructions | [CONTRIBUTING.md](../CONTRIBUTING.md) |
-| Governance | [GOVERNANCE.md](../GOVERNANCE.md) |
-| Contributor legal agreement | [DCO](../DCO) and .github/workflows/dco.yml |
-| Security assessment | [THREAT_MODEL.md](../THREAT_MODEL.md) |
-| Vulnerability response | [SECURITY.md](../SECURITY.md), private reporting, advisories, and [security/vex.json](../security/vex.json) |
+| Build and test instructions | [CONTRIBUTING.md](https://github.com/nix-forge/nix-config-framework/blob/main/CONTRIBUTING.md) |
+| Governance | [GOVERNANCE.md](https://github.com/nix-forge/nix-config-framework/blob/main/GOVERNANCE.md) |
+| Contributor legal agreement | [DCO](https://github.com/nix-forge/nix-config-framework/blob/main/DCO) and .github/workflows/dco.yml |
+| Security assessment | [THREAT_MODEL.md](https://github.com/nix-forge/nix-config-framework/blob/main/THREAT_MODEL.md) |
+| Vulnerability response | [SECURITY.md](https://github.com/nix-forge/nix-config-framework/blob/main/SECURITY.md), private reporting, advisories, and [security/vex.json](https://github.com/nix-forge/nix-config-framework/blob/main/security/vex.json) |
 | Public interfaces and release identity | Module contracts, compatibility docs, reviewed commits, and source tags |
-| Support lifecycle | [SUPPORT.md](../SUPPORT.md) and compatibility policy |
+| Support lifecycle | [SUPPORT.md](https://github.com/nix-forge/nix-config-framework/blob/main/SUPPORT.md) and compatibility policy |
 
 Review this policy when discovery, selector, module, CI, dependency, or
 release behavior changes.

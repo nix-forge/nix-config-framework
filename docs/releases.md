@@ -8,12 +8,12 @@ builds, and focused consumer tests.
 ## Candidate checklist
 
 1. Update the release notes with selector, exported-output, compatibility, and
-   migration changes.
+  migration changes.
 2. Run nix flake check and build the documentation site.
 3. Run the minimal public consumer against the candidate commit and record the
-   tested Nixpkgs, Home Manager, nix-darwin, and flake-parts revisions.
+  tested Nixpkgs, Home Manager, nix-darwin, and flake-parts revisions.
 4. Inspect generated documentation and a clean checkout for private paths,
-   credentials, and generated secrets.
+  credentials, and generated secrets.
 5. Tag the exact reviewed commit. Do not tag a dirty working tree.
 6. Verify the tag and source commit before announcing the release.
 
