@@ -1,5 +1,7 @@
 # nix-config-framework
 
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/14641/baseline)](https://www.bestpractices.dev/en/projects/14641/baseline-1)
+
 `nix-config-framework` is a small flake-parts framework for convention-based
 NixOS, Home Manager, and nix-darwin configurations. It discovers reusable
 features from paths and leaves each target's `default.nix` as the single place
