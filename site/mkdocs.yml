@@ -36,5 +36,6 @@ nav:
   - Project:
       - OpenSSF baseline: openssf-baseline.md
       - Release process: releases.md
+      - Release notes: releases/README.md
       - Dependency management: dependency-management.md
       - Secret management: secret-management.md
