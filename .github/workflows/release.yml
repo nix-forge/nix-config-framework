@@ -1,15 +1,11 @@
 name: Release
-
 on:
   push:
     tags: ["v*.*.*"]
-
 permissions: {}
-
 concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: false
-
 jobs:
   source:
     name: publish source release
@@ -55,4 +51,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.ref_name }}
-        run: gh release create "$TAG" nix-config-framework-* --verify-tag --generate-notes --title "nix-config-framework $TAG"
+        run: gh release create "$TAG" nix-config-framework-* --verify-tag --generate-notes --title "nix-config-framework
+          $TAG"
