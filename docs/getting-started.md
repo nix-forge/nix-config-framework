@@ -1,6 +1,6 @@
 # Start with a standalone home
 
-The [minimal consumer](../examples/minimal/README.md) is a complete flake with a
+The [minimal consumer](https://github.com/nix-forge/nix-config-framework/blob/main/examples/minimal/README.md) is a complete flake with a
 lock file, three neutral home targets and a check of the generated files. Start
 there to understand selectors without configuring a host or supplying secrets.
 
@@ -38,8 +38,8 @@ The layout is intentionally small:
 | Settings belonging to one target | `homes/x86_64-linux/local/home.nix` |
 
 Keep helpers outside `local/`, where every Nix file is imported as a module.
-The [selector reference](../README.md#layout-and-selectors) explains directory
-boundaries and shared modules. The [target reference](../README.md#target-specifications)
+The [selector reference](https://github.com/nix-forge/nix-config-framework/blob/main/README.md#layout-and-selectors) explains directory
+boundaries and shared modules. The [target reference](https://github.com/nix-forge/nix-config-framework/blob/main/README.md#target-specifications)
 explains attaching a home to a NixOS or nix-darwin host.
 
 ## Add a reusable feature
