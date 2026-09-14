@@ -56,19 +56,41 @@
         "aarch64-darwin"
       ];
 
-      perSystem = { pkgs, ... }: {
-        checks.discovery =
-          assert testPasses;
-          assert nixpkgs.lib.assertMsg (failedAssertions == [ ]) (
-            "Integration fixture assertions failed: "
-            + nixpkgs.lib.concatMapStringsSep "; " (entry: entry.message) failedAssertions
-          );
-          assert embeddedHomeTargetKind == "home";
-          assert nixpkgs.lib.elem fixtureNushellPath registeredDarwinShells;
-          assert !(standaloneHomes ? "alice@fixture");
-          assert standaloneHomes ? "bob@standalone";
-          pkgs.runCommand "discovery" { } "touch $out";
-      };
+      perSystem =
+        { pkgs, ... }:
+        let
+          mkdocs = pkgs.python3.withPackages (python: [ python.mkdocs ]);
+          documentationSite =
+            pkgs.runCommand "nix-config-framework-documentation-site" { nativeBuildInputs = [ mkdocs ]; }
+              ''
+                cp -R ${./docs} docs
+                cp -R ${./site} site
+                chmod -R u+w docs
+                mkdocs build --config-file site/mkdocs.yml --site-dir "$out" --strict
+                test -s "$out/index.html"
+                test -s "$out/search/search_index.json"
+              '';
+        in
+        {
+          packages.documentation-site = documentationSite;
+          checks = {
+            discovery =
+              assert testPasses;
+              assert nixpkgs.lib.assertMsg (failedAssertions == [ ]) (
+                "Integration fixture assertions failed: "
+                + nixpkgs.lib.concatMapStringsSep "; " (entry: entry.message) failedAssertions
+              );
+              assert embeddedHomeTargetKind == "home";
+              assert nixpkgs.lib.elem fixtureNushellPath registeredDarwinShells;
+              assert !(standaloneHomes ? "alice@fixture");
+              assert standaloneHomes ? "bob@standalone";
+              pkgs.runCommand "discovery" { } "touch $out";
+          }
+          // nixpkgs.lib.optionalAttrs (pkgs.stdenv.hostPlatform.system == "x86_64-linux") {
+            documentation-site = documentationSite;
+          };
+          devShells.docs = pkgs.mkShellNoCC { packages = [ mkdocs ]; };
+        };
 
       flake = {
         schemas = inputs.flake-schemas.exportedSchemas // {

@@ -5,8 +5,9 @@ NixOS, Home Manager, and nix-darwin configurations. It discovers reusable
 features from paths and leaves each target's `default.nix` as the single place
 that selects features.
 
-Start with the [complete minimal consumer](docs/getting-started.md), then use
-the reference below. Read [compatibility and upgrades](docs/compatibility.md)
+Start with the
+[complete minimal consumer](https://nix-forge.github.io/nix-config-framework/getting-started/),
+then use the reference below. Read [compatibility and upgrades](docs/compatibility.md)
 before changing inputs. For one small home profile, ordinary module imports
 may be all you need.
 
