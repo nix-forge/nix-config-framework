@@ -6,14 +6,12 @@ permissions: {}
 concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: false
-
 env:
   SLSA_BUILDER_SHA: bf01ac186602f722c516823520aef97c8670fcb8
-
 jobs:
   build:
     name: build and attest source release
-    uses: nix-forge/ci/.github/workflows/slsa-source-release.yml@bf01ac186602f722c516823520aef97c8670fcb8 # reviewed SLSA builder
+    uses: nix-forge/ci/.github/workflows/slsa-source-release.yml@bf01ac186602f722c516823520aef97c8670fcb8 # v2.5.4-compatible SLSA builder
     with:
       project_name: nix-config-framework
       release_notes_directory: docs/releases
@@ -84,10 +82,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.ref_name }}
         run: >-
-          gh release create "$TAG"
-          "release/nix-config-framework-$TAG.tar.gz"
-          "release/nix-config-framework-$TAG.tar.gz.sha256"
-          release/release-manifest.txt
-          --verify-tag --draft --notes-file "docs/releases/$TAG.md"
-          --title "nix-config-framework $TAG"
-          && gh release edit "$TAG" --draft=false
+          gh release create "$TAG" "release/nix-config-framework-$TAG.tar.gz" "release/nix-config-framework-$TAG.tar.gz.sha256"
+          release/release-manifest.txt --verify-tag --draft --notes-file "docs/releases/$TAG.md" --title
+          "nix-config-framework $TAG" && gh release edit "$TAG" --draft=false
