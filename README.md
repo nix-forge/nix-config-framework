@@ -2,6 +2,7 @@
 
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/14641/baseline)](https://www.bestpractices.dev/en/projects/14641/baseline-3)
 [![OpenSSF Developer Best Practices](https://www.bestpractices.dev/projects/14641/badge)](https://www.bestpractices.dev/en/projects/14641/passing)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/nix-forge/nix-config-framework/badge)](https://scorecard.dev/viewer/?uri=github.com/nix-forge/nix-config-framework)
 
 `nix-config-framework` is a small flake-parts framework for convention-based
 NixOS, Home Manager, and nix-darwin configurations. It discovers reusable
