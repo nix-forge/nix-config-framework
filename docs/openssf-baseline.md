@@ -10,7 +10,8 @@ nix-config-framework is a reusable library for convention-based NixOS, Home
 Manager, and nix-darwin configurations. It has source releases in the v0.1.x
 tag series. A release is created from reviewed main with an immutable unique
 tag and a compatibility entry in [docs/compatibility.md](compatibility.md).
-The project publishes source, not compiled binary assets.
+The project publishes source, not compiled binary assets. Its provenance
+builder and verification contract are documented in [docs/slsa.md](slsa.md).
 
 This repository is part of the related projects listed in the
 [nix-forge project security contract](https://github.com/nix-forge/.github/blob/main/PROJECTS.md).
