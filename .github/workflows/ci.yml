@@ -22,7 +22,7 @@ jobs:
         with:
           persist-credentials: false
       - id: inventory
-        uses: nix-forge/ci/actions/discover-lockfiles@b89376282fb7de9e78fe31fcf221ee8f730039d6 # v2.5.4-compatible
+        uses: nix-forge/ci/actions/discover-lockfiles@da90bfbbb18cfa1ceb176d55d2a1c3cd3e6b1049 # v2.5.4-compatible
   lock-health:
     name: Flake lock health
     needs: [flake-lock]
@@ -44,7 +44,7 @@ jobs:
       fail-fast: false
       matrix:
         lockfile: ${{ fromJSON(needs.discover.outputs.lockfiles) }}
-    uses: nix-forge/ci/.github/workflows/flake-lock.yml@b89376282fb7de9e78fe31fcf221ee8f730039d6 # v2.5.4-compatible
+    uses: nix-forge/ci/.github/workflows/flake-lock.yml@da90bfbbb18cfa1ceb176d55d2a1c3cd3e6b1049 # v2.5.4-compatible
     with:
       lockfile: ${{ matrix.lockfile }}
   lint:
@@ -59,14 +59,14 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: Set up Nix
-        uses: nix-forge/ci/actions/setup-nix@b89376282fb7de9e78fe31fcf221ee8f730039d6 # v2.5.4-compatible
+        uses: nix-forge/ci/actions/setup-nix@da90bfbbb18cfa1ceb176d55d2a1c3cd3e6b1049 # v2.5.4-compatible
         with:
           cache: ${{ vars.NIX_CI_CACHE == 'true' }}
           cache-scope: ci-lint
       - name: Check shared workflow contracts
-        uses: nix-forge/ci/actions/validate-workflows@b89376282fb7de9e78fe31fcf221ee8f730039d6 # v2.5.4-compatible
+        uses: nix-forge/ci/actions/validate-workflows@da90bfbbb18cfa1ceb176d55d2a1c3cd3e6b1049 # v2.5.4-compatible
       - name: Run repository hooks and publication checks
-        uses: nix-forge/ci/actions/repository-checks@b89376282fb7de9e78fe31fcf221ee8f730039d6 # v2.5.4-compatible SLSA contract
+        uses: nix-forge/ci/actions/repository-checks@da90bfbbb18cfa1ceb176d55d2a1c3cd3e6b1049 # v2.5.4-compatible SLSA contract
   flake:
     name: Flake checks (${{ matrix.system }})
     runs-on: ${{ matrix.runner }}
@@ -88,18 +88,18 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Nix
-        uses: nix-forge/ci/actions/setup-nix@b89376282fb7de9e78fe31fcf221ee8f730039d6 # v2.5.4-compatible
+        uses: nix-forge/ci/actions/setup-nix@da90bfbbb18cfa1ceb176d55d2a1c3cd3e6b1049 # v2.5.4-compatible
         with:
           cache: ${{ vars.NIX_CI_CACHE == 'true' }}
           cache-scope: ci-flake
       - name: Materialize discovered partitions
-        uses: nix-forge/ci/actions/materialize-partitions@b89376282fb7de9e78fe31fcf221ee8f730039d6 # v2.5.4-compatible
+        uses: nix-forge/ci/actions/materialize-partitions@da90bfbbb18cfa1ceb176d55d2a1c3cd3e6b1049 # v2.5.4-compatible
       - name: Validate all exported flake schemas
         env:
           TARGET_SYSTEM: ${{ matrix.system }}
         run: nix flake check --no-build --show-trace --system "$TARGET_SYSTEM"
       - name: Build every declared native check
-        uses: nix-forge/ci/actions/flake-checks@b89376282fb7de9e78fe31fcf221ee8f730039d6 # v2.5.4-compatible
+        uses: nix-forge/ci/actions/flake-checks@da90bfbbb18cfa1ceb176d55d2a1c3cd3e6b1049 # v2.5.4-compatible
         with:
           system: ${{ matrix.system }}
       - name: Build the public consumer with its locked framework
@@ -120,4 +120,4 @@ jobs:
       actions: write # Dispatch trusted queue validation.
     steps:
       - name: Notify trusted queue reconciler
-        uses: nix-forge/ci/actions/queue-completion@b89376282fb7de9e78fe31fcf221ee8f730039d6 # v2.5.4-compatible
+        uses: nix-forge/ci/actions/queue-completion@da90bfbbb18cfa1ceb176d55d2a1c3cd3e6b1049 # v2.5.4-compatible

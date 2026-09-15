@@ -16,7 +16,7 @@ Verify a downloaded archive with:
 gh attestation verify nix-config-framework-vX.Y.Z.tar.gz \
   --repo nix-forge/nix-config-framework \
   --signer-workflow nix-forge/ci/.github/workflows/slsa-source-release.yml \
-  --signer-digest bf01ac186602f722c516823520aef97c8670fcb8
+  --signer-digest da90bfbbb18cfa1ceb176d55d2a1c3cd3e6b1049
 ```
 
 This is a bounded SLSA Build track claim for the named source-release assets.
