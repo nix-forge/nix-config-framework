@@ -35,6 +35,7 @@ nav:
   - Compatibility and upgrades: compatibility.md
   - Project:
       - OpenSSF baseline: openssf-baseline.md
+      - SLSA provenance: slsa.md
       - Release process: releases.md
       - Release notes: releases/README.md
       - Dependency management: dependency-management.md
