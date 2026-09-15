@@ -27,17 +27,24 @@ For example:
 gh release download v0.1.x --repo nix-forge/nix-config-framework --dir release-v0.1.x
 (cd release-v0.1.x && sha256sum -c nix-config-framework-v0.1.x.tar.gz.sha256)
 gh attestation verify release-v0.1.x/nix-config-framework-v0.1.x.tar.gz \
-  --repo nix-forge/nix-config-framework
+  --repo nix-forge/nix-config-framework \
+  --signer-workflow nix-forge/ci/.github/workflows/slsa-source-release.yml \
+  --signer-digest bf01ac186602f722c516823520aef97c8670fcb8
 ```
 
 The expected release identity is the `nix-forge/nix-config-framework`
-repository and its reviewed `.github/workflows/release.yml` workflow.
+repository and the pinned `nix-forge/ci/.github/workflows/slsa-source-release.yml`
+reusable builder. Keep the digest in this command synchronized with
+`.github/workflows/release.yml`.
 
-The project publishes source, not opaque compiled assets. Release notes name
-the actor and process, list public module interfaces, explain security impact,
-describe source verification, link the threat model, and state the support and
-end-of-life window. A release stops receiving security updates when its support
-window ends or a later major contract removes it from the supported matrix.
+The project publishes source, not opaque compiled assets. The reusable builder
+creates and attests the archive, checksum, and manifest; the protected
+publisher verifies their bytes and signer, attaches them to a draft, and then
+publishes the immutable release. Release notes name the actor and process, list
+public module interfaces, explain security impact, describe source
+verification, link the threat model, and state the support and end-of-life
+window. A release stops receiving security updates when its support window ends
+or a later major contract removes it from the supported matrix.
 
 ## Compatibility
 
