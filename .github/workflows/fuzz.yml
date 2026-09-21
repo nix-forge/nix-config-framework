@@ -1,6 +1,8 @@
 name: Fuzz module selectors
 on:
   pull_request:
+  merge_group:
+    types: [checks_requested]
   schedule:
     - cron: '23 9 * * 1'
   workflow_dispatch:
