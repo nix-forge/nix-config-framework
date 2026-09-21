@@ -22,8 +22,11 @@ gh attestation verify nix-config-framework-vX.Y.Z.tar.gz \
   --signer-digest bb1b39a9082f72dc6c7ce596103ce7a5e4d29b01
 ```
 
-This is a bounded SLSA Build track claim for the named source-release assets.
-It does not claim that a local flake evaluation or an arbitrary consumer build
-has the same provenance. See the [SLSA Build specification](https://slsa.dev/spec/v1.2/)
+These are release controls, not a verified Level 3 claim yet. No published
+release asset was available to verify on 21 September 2026. After the first
+release, verify its downloaded archive and attestation against the expected
+builder before making a Build track claim for those exact bytes. A local flake
+evaluation or arbitrary consumer build has separate provenance. See the
+[SLSA Build specification](https://slsa.dev/spec/v1.2/)
 and [GitHub's Level 3 guidance](https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/increase-security-rating)
 for the model and verification requirements.

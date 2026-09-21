@@ -29,7 +29,7 @@ gh release download v0.1.x --repo nix-forge/nix-config-framework --dir release-v
 gh attestation verify release-v0.1.x/nix-config-framework-v0.1.x.tar.gz \
   --repo nix-forge/nix-config-framework \
   --signer-workflow nix-forge/ci/.github/workflows/slsa-source-release.yml \
-  --signer-digest da90bfbbb18cfa1ceb176d55d2a1c3cd3e6b1049
+  --signer-digest bb1b39a9082f72dc6c7ce596103ce7a5e4d29b01
 ```
 
 The expected release identity is the `nix-forge/nix-config-framework`
