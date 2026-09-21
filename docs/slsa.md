@@ -9,14 +9,17 @@ bytes to the protected publisher job.
 The publisher verifies the tag, checksum, source commit, signer workflow, and
 builder commit before creating the GitHub Release. The builder has no release
 write permission, no long-lived signing key, and no shared release cache.
+The publisher attaches the portable `*.intoto.jsonl` bundle beside the archive
+before making the release immutable.
 
 Verify a downloaded archive with:
 
 ```console
 gh attestation verify nix-config-framework-vX.Y.Z.tar.gz \
   --repo nix-forge/nix-config-framework \
+  --bundle nix-config-framework-vX.Y.Z.intoto.jsonl \
   --signer-workflow nix-forge/ci/.github/workflows/slsa-source-release.yml \
-  --signer-digest da90bfbbb18cfa1ceb176d55d2a1c3cd3e6b1049
+  --signer-digest bb1b39a9082f72dc6c7ce596103ce7a5e4d29b01
 ```
 
 This is a bounded SLSA Build track claim for the named source-release assets.
