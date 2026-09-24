@@ -1,8 +1,9 @@
 # OpenSSF baseline policy
 
 This repository uses the [OSPS Baseline](https://baseline.openssf.org/versions/2026-08-28)
-version 2026.08.28 as its security policy reference. The policy covers the flake-parts framework, public module
-contracts, documentation site, CI, and source releases.
+version 2026.08.28 as its security policy reference. The policy covers the
+flake-parts framework, public module contracts, documentation site, CI, and
+source releases.
 
 ## Current assessed status
 
