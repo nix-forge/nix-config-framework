@@ -7,12 +7,17 @@ source releases.
 
 ## Current assessed status
 
-The [current self-assessment](https://www.bestpractices.dev/en/projects/14641/baseline-1)
-records OSPS Baseline Level 1 for version 2026.08.28. Existing v0.1.x
-source tags are releases under the Baseline's definition. They lack a
-per-release functional and security change log and signed archive manifest,
-so OSPS-BR-04.01 and OSPS-BR-06.01 are **unmet**. The Developer Best Practices
-assessment is also in progress because those tags lack release notes.
+The [current self-assessment](https://www.bestpractices.dev/en/projects/14641/baseline-2)
+records OSPS Baseline Level 2 for version 2026.08.28. The 13 signed v0.1.x
+source tags are releases under the Baseline's definition. Each now has a
+[GitHub Release](https://github.com/nix-forge/nix-config-framework/releases)
+with a retrospective functional and security change log, a source archive,
+checksums, a hash manifest, and Sigstore provenance. The protected
+[backfill run](https://github.com/nix-forge/nix-config-framework/actions/runs/36081870928)
+verified all four content assets before publication; downloaded archives and
+attestations were independently rechecked afterward. OSPS-BR-04.01 and
+OSPS-BR-06.01 are **met**. The [Developer Best Practices assessment](https://www.bestpractices.dev/en/projects/14641/passing)
+has reached Passing.
 
 Level 3 is not claimed. The protected `main` branch requires zero independent
 human approvals, so OSPS-QA-07.01 is **unmet** while the project has one
@@ -90,7 +95,7 @@ records reviewed non-affectability statements. Support rules are in
 | Control area | Evidence |
 | --- | --- |
 | Least-privilege CI and trusted inputs | Empty default permissions, job scopes, pinned actions, quoted inputs, and no fork secrets |
-| Releases and change logs | [docs/compatibility.md](compatibility.md) and source tags |
+| Releases and change logs | [Historical notes](releases/README.md), [published releases](https://github.com/nix-forge/nix-config-framework/releases), signed tags, and attested manifests |
 | Dependencies | flake.lock, dependency review, and CodeQL |
 | Build and test instructions | [CONTRIBUTING.md](https://github.com/nix-forge/nix-config-framework/blob/main/CONTRIBUTING.md) |
 | Governance | [GOVERNANCE.md](https://github.com/nix-forge/nix-config-framework/blob/main/GOVERNANCE.md) |
