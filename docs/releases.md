@@ -21,14 +21,14 @@ status; a workflow definition or draft note alone is not release evidence.
 ## Candidate checklist
 
 1. Create `docs/releases/v0.1.x.md` for the exact tag. It must contain a
-  `## Changelog` section with functional and security changes, affected
-  consumers, migration notes, and the checks and support window for the
-  release. The release workflow rejects a tag without this file.
+   `## Changelog` section with functional and security changes, affected
+   consumers, migration notes, and the checks and support window for the
+   release. The release workflow rejects a tag without this file.
 2. Run nix flake check and build the documentation site.
 3. Run the minimal public consumer against the candidate commit and record the
-  tested Nixpkgs, Home Manager, nix-darwin, and flake-parts revisions.
+   tested Nixpkgs, Home Manager, nix-darwin, and flake-parts revisions.
 4. Inspect generated documentation and a clean checkout for private paths,
-  credentials, and generated secrets.
+   credentials, and generated secrets.
 5. Tag the exact reviewed commit. Do not tag a dirty working tree.
 6. Verify the release using the commands below.
 
