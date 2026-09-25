@@ -14,7 +14,8 @@ GitHub-generated archives. Reviewed retrospective notes now live in
 `backfill-source-releases.yml` workflow checks each signed tag against the
 protected main branch, builds its source archive, attests the archive, checksum,
 notes, and manifest, then publishes a GitHub Release through the protected
-`release` environment. The release page states that the notes were added later.
+`release` environment. The [backfill run](https://github.com/nix-forge/nix-config-framework/actions/runs/36081870928)
+completed on 2026-09-25. The release pages state that the notes were added later.
 The current [OpenSSF assessment](openssf-baseline.md) records the verified
 status; a workflow definition or draft note alone is not release evidence.
 
