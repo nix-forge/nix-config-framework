@@ -9,23 +9,27 @@ check, documentation builds, and focused consumer tests.
 
 The public v0.1.x tags through v0.1.12 identify versioned source trees. They
 were published without per-tag release notes or a signed manifest for the
-GitHub-generated archives. The verification commands below describe the
-planned source-release workflow; they do not verify those historical tags.
-The current [OpenSSF assessment](openssf-baseline.md) records these gaps.
+GitHub-generated archives. Reviewed retrospective notes now live in
+[`docs/releases/`](releases/README.md). The manually dispatched
+`backfill-source-releases.yml` workflow checks each signed tag against the
+protected main branch, builds its source archive, attests the archive, checksum,
+notes, and manifest, then publishes a GitHub Release through the protected
+`release` environment. The release page states that the notes were added later.
+The current [OpenSSF assessment](openssf-baseline.md) records the verified
+status; a workflow definition or draft note alone is not release evidence.
 
 ## Candidate checklist
 
-1. Create `docs/releases/v0.1.x.md` for the exact tag. It must contain a
-  `## Changelog` section with functional and security changes, affected
-  consumers, migration notes, and the checks and support window for the
-  release. The release workflow rejects a tag without this file.
-2. Run nix flake check and build the documentation site.
-3. Run the minimal public consumer against the candidate commit and record the
-  tested Nixpkgs, Home Manager, nix-darwin, and flake-parts revisions.
-4. Inspect generated documentation and a clean checkout for private paths,
+- Create `docs/releases/v0.1.x.md` for the exact tag. Include a `## Changelog`
+  with functional and security changes, consumer impact, migration notes,
+  checks, and the support window. The workflow rejects a tag without it.
+- Run nix flake check and build the documentation site.
+- Run the minimal public consumer against the candidate commit. Record tested
+  Nixpkgs, Home Manager, nix-darwin, and flake-parts revisions.
+- Inspect generated documentation and a clean checkout for private paths,
   credentials, and generated secrets.
-5. Tag the exact reviewed commit. Do not tag a dirty working tree.
-6. Verify the release using the commands below.
+- Tag the exact reviewed commit. Do not tag a dirty working tree.
+- Verify the release using the commands below.
 
 ## Verification
 
@@ -39,6 +43,16 @@ gh attestation verify release-v0.1.x/nix-config-framework-v0.1.x.tar.gz \
   --signer-workflow nix-forge/ci/.github/workflows/slsa-source-release.yml \
   --signer-digest bb1b39a9082f72dc6c7ce596103ce7a5e4d29b01
 ```
+
+For a historical backfilled release, use its `nix-config-framework-v0.1.x.intoto.jsonl`
+bundle and verify **each** uploaded content asset (`.tar.gz`, `.tar.gz.sha256`,
+`release-notes.md`, and `release-manifest.txt`) with `gh attestation verify`
+and `--signer-workflow nix-forge/nix-config-framework/.github/workflows/backfill-source-releases.yml`.
+Check that the manifest's `signed_tag_object` is the GitHub-verified signed tag
+and that `source_commit` matches its peeled commit. The backfill's signer is
+the framework workflow on protected main, not the future reusable builder.
+These retrospective attestations make no claim that the original 2026-07-21
+and 2026-07-22 builds had provenance.
 
 The expected release identity is the `nix-forge/nix-config-framework`
 repository and the pinned `nix-forge/ci/.github/workflows/slsa-source-release.yml`
