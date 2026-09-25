@@ -1,5 +1,6 @@
 # nix-config-framework
 
+[![OpenSSF Baseline](https://www.bestpractices.dev/projects/14641/baseline)](https://www.bestpractices.dev/en/projects/14641/baseline-2)
 [![OpenSSF Developer Best Practices](https://www.bestpractices.dev/projects/14641/badge)](https://www.bestpractices.dev/en/projects/14641/passing)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/nix-forge/nix-config-framework/badge)](https://scorecard.dev/viewer/?uri=github.com/nix-forge/nix-config-framework)
 
