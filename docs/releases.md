@@ -1,9 +1,17 @@
 # Release process
 
 The framework uses immutable semantic-version source tags in the v0.1.x series.
-A release starts from a reviewed commit on main after the pull request has
-passed flake checks, dependency review, CodeQL, the DCO check, documentation
-builds, and focused consumer tests.
+Future GitHub source releases must start from a reviewed commit on main after
+the pull request has passed flake checks, dependency review, CodeQL, the DCO
+check, documentation builds, and focused consumer tests.
+
+## Historical source tags
+
+The public v0.1.x tags through v0.1.12 identify versioned source trees. They
+were published without per-tag release notes or a signed manifest for the
+GitHub-generated archives. The verification commands below describe the
+planned source-release workflow; they do not verify those historical tags.
+The current [OpenSSF assessment](openssf-baseline.md) records these gaps.
 
 ## Candidate checklist
 

@@ -7,21 +7,24 @@ source releases.
 
 ## Current assessed status
 
-The [current self-assessment](https://www.bestpractices.dev/en/projects/14641/baseline-2)
-records OSPS Baseline Level 2 for version 2026.08.28. The project does
-**not** claim Level 3. OSPS-QA-07.01 at Level 3 requires every change to receive
-approval from at least one human reviewer who did not author it. The project
-currently has one maintainer, and the protected `main` branch requires zero
-approving reviews. This control is **unmet** in the published assessment,
-so the Baseline badge displays Level 2. A future Level 3 claim needs both the independent
-review process and an evidence-backed assessment of all other Level 3 controls.
+The [current self-assessment](https://www.bestpractices.dev/en/projects/14641/baseline-1)
+records OSPS Baseline Level 1 for version 2026.08.28. Existing v0.1.x
+source tags are releases under the Baseline's definition. They lack a
+per-release functional and security change log and signed archive manifest,
+so OSPS-BR-04.01 and OSPS-BR-06.01 are **unmet**. The Developer Best Practices
+assessment is also in progress because those tags lack release notes.
+
+Level 3 is not claimed. The protected `main` branch requires zero independent
+human approvals, so OSPS-QA-07.01 is **unmet** while the project has one
+maintainer. The published assessment records other unmet Level 3 controls.
+Future claims require an evidence-backed review of every applicable control.
 
 ## Project scope and releases
 
 nix-config-framework is a reusable library for convention-based NixOS, Home
 Manager, and nix-darwin configurations. It has source releases in the v0.1.x
-tag series. A release is created from reviewed main with an immutable unique
-tag and a compatibility entry in [docs/compatibility.md](compatibility.md).
+tag series. Future releases will use reviewed main commits, immutable tags,
+and versioned notes linked from [docs/releases.md](releases.md).
 The project publishes source, not compiled binary assets. Its provenance
 builder and verification contract are documented in [docs/slsa.md](slsa.md).
 
