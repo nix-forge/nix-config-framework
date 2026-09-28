@@ -18,7 +18,7 @@ jobs:
       actions: read # Read workflow metadata for CodeQL analysis.
       contents: read
       security-events: write # Upload code scanning results.
-    uses: nix-forge/ci/.github/workflows/codeql.yml@4f58fd74e91957fa257cb48e2fa2687e09689e2c # v2.8.0-compatible
+    uses: nix-forge/ci/.github/workflows/codeql.yml@35bb6bd906f5d5ec6b9c93f5385ba4f079e90f43 # v2.8.0-compatible
     with:
       languages: actions
   queue-completion:
