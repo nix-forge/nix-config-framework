@@ -11,7 +11,7 @@ env:
 jobs:
   build:
     name: build and attest source release
-    uses: nix-forge/ci/.github/workflows/slsa-source-release.yml@bb1b39a9082f72dc6c7ce596103ce7a5e4d29b01 # v2.8.0-compatible SLSA builder
+    uses: nix-forge/ci/.github/workflows/slsa-source-release.yml@13ad6e366ec01e317705d750fc512d33ecc15f6c # v2.8.0-compatible SLSA builder
     with:
       project_name: nix-config-framework
       release_notes_directory: docs/releases
