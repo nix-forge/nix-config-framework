@@ -5,6 +5,12 @@ Future GitHub source releases must start from a reviewed commit on main after
 the pull request has passed flake checks, dependency review, CodeQL, the DCO
 check, documentation builds, and focused consumer tests.
 
+Version-tag creation is restricted to organization administrators, and existing
+version tags cannot be updated or deleted. The `release` environment accepts
+only version tags. Routine publication completes automatically after the
+publisher verifies protected default-branch ancestry, release bytes, and signed
+provenance; it does not require an additional environment reviewer prompt.
+
 ## Historical source tags
 
 The public v0.1.x tags through v0.1.12 identify versioned source trees. They
