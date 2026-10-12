@@ -19,8 +19,11 @@ gh attestation verify nix-config-framework-vX.Y.Z.tar.gz \
   --repo nix-forge/nix-config-framework \
   --bundle nix-config-framework-vX.Y.Z.intoto.jsonl \
   --signer-workflow nix-forge/ci/.github/workflows/slsa-source-release.yml \
-  --signer-digest bb1b39a9082f72dc6c7ce596103ce7a5e4d29b01
+  --signer-digest <RELEASE_BUILDER_SHA>
 ```
+
+Replace `<RELEASE_BUILDER_SHA>` with the reusable builder commit pinned by
+`.github/workflows/release.yml` at the released source tag.
 
 These are release controls, not a verified Level 3 claim yet. No published
 release asset was available to verify on 21 September 2026. After the first

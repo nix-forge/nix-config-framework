@@ -42,7 +42,7 @@ gh release download v0.1.x --repo nix-forge/nix-config-framework --dir release-v
 gh attestation verify release-v0.1.x/nix-config-framework-v0.1.x.tar.gz \
   --repo nix-forge/nix-config-framework \
   --signer-workflow nix-forge/ci/.github/workflows/slsa-source-release.yml \
-  --signer-digest bb1b39a9082f72dc6c7ce596103ce7a5e4d29b01
+  --signer-digest <RELEASE_BUILDER_SHA>
 ```
 
 For a historical backfilled release, use its `nix-config-framework-v0.1.x.intoto.jsonl`
@@ -55,10 +55,11 @@ the framework workflow on protected main, not the future reusable builder.
 These retrospective attestations make no claim that the original 2026-07-21
 and 2026-07-22 builds had provenance.
 
-The expected release identity is the `nix-forge/nix-config-framework`
-repository and the pinned `nix-forge/ci/.github/workflows/slsa-source-release.yml`
-reusable builder. Keep the digest in this command synchronized with
-`.github/workflows/release.yml`.
+The expected release identity is the `nix-forge/nix-config-framework` repository
+and the pinned `nix-forge/ci/.github/workflows/slsa-source-release.yml` reusable
+builder. For `<RELEASE_BUILDER_SHA>`, use the reusable builder commit pinned in
+`.github/workflows/release.yml` at the released source tag. The publisher
+resolves that identity from the tagged workflow before verifying its provenance.
 
 The project publishes source, not opaque compiled assets. The reusable builder
 creates and attests the archive, checksum, and manifest; the protected

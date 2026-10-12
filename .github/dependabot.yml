@@ -4,6 +4,7 @@ updates:
     directories:
       - "/"
       - "/flake/dev"
+      - "/examples/minimal"
     schedule:
       interval: "weekly"
       day: monday
