@@ -9,7 +9,7 @@ concurrency:
 jobs:
   build:
     name: build and attest source release
-    uses: nix-forge/ci/.github/workflows/slsa-source-release.yml@13ad6e366ec01e317705d750fc512d33ecc15f6c # v2.8.0-compatible SLSA builder
+    uses: nix-forge/ci/.github/workflows/slsa-source-release.yml@1a6dfe0b851c69ad30169977e014bd45029e9c55 # v2.8.0-compatible SLSA builder
     with:
       project_name: nix-config-framework
       release_notes_directory: docs/releases
