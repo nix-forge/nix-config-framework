@@ -5,12 +5,12 @@
       inherit (config.pre-commit.settings) enabledPackages package shellHook;
     in
     {
-      devShells.default = pkgs.mkShellNoCC {
+      devShells.default = pkgs.buildPackages.mkShellNoCC {
         inherit shellHook;
         packages =
           enabledPackages
           ++ [ package ]
-          ++ (with pkgs; [
+          ++ (with pkgs.buildPackages; [
             actionlint
             deadnix
             direnv
@@ -26,9 +26,12 @@
             prettier
             prek
             rumdl
+            python3
+            ruff
             statix
             taplo
             treefmt
+            ty
             typos
             yamlfmt
             yamllint
