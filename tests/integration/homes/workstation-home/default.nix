@@ -1,5 +1,5 @@
-{ modules, ... }: {
-  system = "aarch64-darwin";
+{ modules, inputs, ... }: {
+  system = inputs.fixtureHomeSystem or "aarch64-darwin";
   username = "alice";
   homeDirectory = "/Users/alice";
   uid = 501;

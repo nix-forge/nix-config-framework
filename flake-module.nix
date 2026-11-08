@@ -75,6 +75,7 @@ let
       username,
       home,
       extraModules ? [ ],
+      hostSystem,
     }:
     { lib, ... }: {
       imports = frameworkLib.targetModules home ++ extraModules;
@@ -94,6 +95,12 @@ let
         homeDirectory = lib.mkForce home.homeDirectory;
         uid = lib.mkForce (home.uid or null);
       };
+      assertions = [
+        {
+          assertion = home.system == hostSystem;
+          message = "Attached home '${home.name}' targets ${home.system}, but its host supplies ${hostSystem} packages.";
+        }
+      ];
       nix.package = lib.mkForce null;
       programs.home-manager.enable = true;
     };
@@ -109,6 +116,7 @@ let
         in
         mkHomeModule {
           inherit username home;
+          hostSystem = host.system;
           extraModules = connection.extraModules or [ ];
         }
       ) connections;
@@ -142,14 +150,19 @@ let
         # take precedence over each user's _module.args. Keep target-specific
         # arguments in mkHomeModule so one host cannot shadow its homes' args.
         extraSpecialArgs =
-          cfg.extraSpecialArgs
-          // {
-            inherit inputs self;
-            inherit (host) system;
-            configName = host.name;
-            targetName = host.name;
-          }
-          // (host.homeManagerExtraSpecialArgs or { });
+          removeAttrs
+            (
+              cfg.extraSpecialArgs
+              // {
+                inherit inputs self;
+                inherit (host) system;
+              }
+              // (host.homeManagerExtraSpecialArgs or { })
+            )
+            [
+              "configName"
+              "targetName"
+            ];
         inherit users;
       };
       users.users = declaredUsers;
@@ -181,6 +194,10 @@ let
         modules = [
           { networking.hostName = host.hostName or host.hostname or host.name; }
           { nixpkgs = frameworkLib.nixpkgsArgs host; }
+          (lib.optionalAttrs (platform == "nixos") {
+            nixpkgs.buildPlatform = lib.mkDefault (host.buildSystem or host.system);
+            nixpkgs.hostPlatform = lib.mkDefault host.system;
+          })
         ]
         ++ lib.optionals ((host.homes or { }) != { }) [ (hmConnectionModule platform host) ]
         ++ frameworkLib.targetModules host;
@@ -192,7 +209,13 @@ let
     withSystem home.system (
       { inputs', self', ... }:
       let
-        pkgs = import inputs.nixpkgs ({ inherit (home) system; } // frameworkLib.nixpkgsArgs home);
+        pkgs = import inputs.nixpkgs (
+          (import ./flake/platform-args.nix {
+            buildSystem = home.buildSystem or home.system;
+            hostSystem = home.system;
+          })
+          // frameworkLib.nixpkgsArgs home
+        );
       in
       inputs.home-manager.lib.homeManagerConfiguration {
         inherit pkgs;

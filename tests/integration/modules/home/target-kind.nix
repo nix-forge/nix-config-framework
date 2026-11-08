@@ -2,16 +2,17 @@
   system,
   targetKind,
   targetName,
+  configName,
   ...
 }:
 {
-  imports =
-    assert system == "aarch64-darwin";
-    assert targetName == "fixture";
-    [ ];
-
   home = {
-    sessionVariables.FRAMEWORK_TARGET_KIND = targetKind;
+    sessionVariables = {
+      FRAMEWORK_CONFIG_NAME = configName;
+      FRAMEWORK_TARGET_NAME = targetName;
+      FRAMEWORK_SYSTEM = system;
+      FRAMEWORK_TARGET_KIND = targetKind;
+    };
     stateVersion = "25.05";
   };
 }

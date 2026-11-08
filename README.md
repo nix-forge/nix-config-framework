@@ -112,3 +112,11 @@ Intel macOS consumers should pin a nixpkgs release that still supports
 The discovery check forces the fixture's module assertions as well as checking
 selected outputs. A failed target-name assertion therefore fails evaluation
 without building a Darwin system on Linux.
+
+## Native and cross builds
+
+Ordinary flake outputs use their native platform. `lib.packagesFor` accepts an
+explicit Linux `buildSystem` and `hostSystem`: matching architectures stay
+native, while different architectures select cross-compilation in either
+direction. Documentation-only packages run natively on the selected worker.
+CPU emulation is separate and only needed to execute foreign target programs.
