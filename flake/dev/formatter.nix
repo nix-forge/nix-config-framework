@@ -54,6 +54,17 @@
     };
 
     # TOML, Markdown, and repository text
+    ruff-check.enable = true;
+    ruff-format.enable = true;
+    shfmt = {
+      enable = true;
+      indent_size = 2;
+      priority = 100;
+    };
+    shellcheck = {
+      enable = true;
+      priority = 200;
+    };
     keep-sorted.enable = true;
     just.enable = true;
     taplo.enable = true;

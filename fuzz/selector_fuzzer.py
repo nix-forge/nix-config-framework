@@ -15,18 +15,25 @@ ROOT = Path(DIRECTORY.name) / "modules"
 
 
 def suffix(provider: atheris.FuzzedDataProvider) -> str:
+    """Generate a short lowercase identifier suffix.
+
+    Returns:
+        A three-letter suffix for a generated selector name.
+
+    """
     return "".join(chr(97 + provider.ConsumeIntInRange(0, 25)) for _ in range(3))
 
 
 @atheris.instrument_func
 def test_one_input(data: bytes) -> None:
+    """Compare discovered selectors and collision failures with a generated tree."""
     provider = atheris.FuzzedDataProvider(data)
     if ROOT.exists():
         shutil.rmtree(ROOT)
     ROOT.mkdir()
     count = provider.ConsumeIntInRange(1, 8)
     expected = set()
-    first_name = None
+    first_name = ""
     first_is_file = False
     for index in range(count):
         name = f"entry{index}{suffix(provider)}"

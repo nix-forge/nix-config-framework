@@ -1,0 +1,78 @@
+[tool.ruff]
+fix = false
+preview = true
+target-version = "py314"
+
+[tool.ruff.lint]
+preview = true
+future-annotations = true
+select = ["ALL"]
+ignore = [
+  # Ruff formatter owns these rules.
+  "tab-indentation",
+  "indentation-with-invalid-multiple",
+  "indentation-with-invalid-multiple-comment",
+  "over-indented",
+  "docstring-tab-indentation",
+  "triple-single-quotes",
+  "bad-quotes-inline-string",
+  "bad-quotes-multiline-string",
+  "bad-quotes-docstring",
+  "avoidable-escaped-quote",
+  "missing-trailing-comma",
+  "prohibited-trailing-comma",
+  "multi-line-implicit-string-concatenation",
+  "line-too-long",
+  "CPY",
+  "FBT",
+  "implicit-namespace-package",
+  "incorrect-blank-line-before-class",
+  "multi-line-summary-second-line",
+
+]
+
+[tool.ruff.lint.flake8-bandit]
+check-typed-exception = true
+
+[tool.ruff.lint.flake8-builtins]
+strict-checking = true
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.flake8-type-checking]
+strict = true
+
+[tool.ruff.lint.per-file-ignores]
+".github/tests/test_release_workflow.py" = [
+  # These portable release fixtures use the standard-library unittest runner.
+  "pytest-unittest-assertion",
+]
+"fuzz/*.py" = [
+  # Assertions signal fuzzer failures; Nix runs from the declared CI environment.
+  "assert",
+  "suspicious-subprocess-import",
+  "subprocess-without-shell-equals-true",
+  "start-process-with-partial-path",
+]
+
+[tool.ruff.format]
+docstring-code-format = true
+line-ending = "lf"
+preview = true
+
+[tool.ty.analysis]
+# Atheris is installed by the native fuzz action, not portable documentation tooling.
+allowed-unresolved-imports = ["atheris"]
+
+[tool.ty.environment]
+python-version = "3.14"
+python-platform = "all"
+
+[tool.ty.src]
+include = ["**/*.py", "**/*.pyi"]
+exclude = [".git", ".direnv", ".ruff_cache", "**/__pycache__", "result"]
+
+[tool.ty.terminal]
+error-on-warning = true
+output-format = "concise"

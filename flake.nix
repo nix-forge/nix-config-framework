@@ -30,14 +30,22 @@
         value: builtins.isFunction value || builtins.isAttrs value
       );
       testPasses = import ./tests { inherit (nixpkgs) lib; };
-      integrationFixture = inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-        systems = [ "aarch64-darwin" ];
-        imports = [ ./flake-module.nix ];
-        nixConfigFramework = {
-          root = ./tests/integration;
-          extraSpecialArgsFor = { kind, ... }: { targetKind = kind; };
+      mkIntegrationFixture =
+        extraInputs:
+        inputs.flake-parts.lib.mkFlake { inputs = inputs // extraInputs; } {
+          systems = [ "aarch64-darwin" ];
+          imports = [ ./flake-module.nix ];
+          nixConfigFramework = {
+            root = ./tests/integration;
+            extraSpecialArgs = {
+              configName = "wrong-global-name";
+              targetName = "wrong-global-target";
+            };
+            extraSpecialArgsFor = { kind, ... }: { targetKind = kind; };
+          };
         };
-      };
+      integrationFixture = mkIntegrationFixture { };
+      incompatibleHomeFixture = mkIntegrationFixture { fixtureHomeSystem = "x86_64-linux"; };
       embeddedHomeTargetKind =
         integrationFixture.darwinConfigurations.fixture.config.home-manager.users.alice.home.sessionVariables.FRAMEWORK_TARGET_KIND;
       fixtureNushell = inputs.nixpkgs.legacyPackages.aarch64-darwin.nushell;
@@ -49,7 +57,10 @@
       ) integrationFixture.darwinConfigurations.fixture.config.assertions;
     in
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [ ./flake/partitions.nix ];
+      imports = [
+        ./flake/build-platform.nix
+        ./flake/partitions.nix
+      ];
       systems = [
         "x86_64-linux"
         "aarch64-linux"
@@ -80,9 +91,21 @@
                 "Integration fixture assertions failed: "
                 + nixpkgs.lib.concatMapStringsSep "; " (entry: entry.message) failedAssertions
               );
+              assert nixpkgs.lib.any (
+                entry: !entry.assertion && nixpkgs.lib.hasInfix "Attached home" entry.message
+              ) incompatibleHomeFixture.darwinConfigurations.fixture.config.home-manager.users.alice.assertions;
               assert embeddedHomeTargetKind == "home";
+              assert
+                integrationFixture.darwinConfigurations.fixture.config.home-manager.users.alice.home.sessionVariables.FRAMEWORK_CONFIG_NAME
+                == "alice@workstation-home";
+              assert
+                integrationFixture.darwinConfigurations.fixture.config.home-manager.users.alice.home.sessionVariables.FRAMEWORK_TARGET_NAME
+                == "workstation-home";
+              assert
+                integrationFixture.darwinConfigurations.fixture.config.home-manager.users.alice.home.sessionVariables.FRAMEWORK_SYSTEM
+                == "aarch64-darwin";
               assert nixpkgs.lib.elem fixtureNushellPath registeredDarwinShells;
-              assert !(standaloneHomes ? "alice@fixture");
+              assert !(standaloneHomes ? "alice@workstation-home");
               assert standaloneHomes ? "bob@standalone";
               pkgs.runCommand "discovery" { } "touch $out";
           }
@@ -97,7 +120,10 @@
           flakeModules = moduleSchema;
           lib = exportSchema "library function" builtins.isFunction;
         };
-        lib = import ./lib { inherit (nixpkgs) lib; };
+        lib = (import ./lib { inherit (nixpkgs) lib; }) // {
+          # These exports are documentation, with no target executables.
+          packagesFor = platform: inputs.self.packages.${platform.buildSystem};
+        };
         flakeModules.default = import ./flake-module.nix;
       };
     };

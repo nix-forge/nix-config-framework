@@ -5,7 +5,7 @@
     pre-commit = {
       check.enable = true;
       settings = {
-        package = pkgs.prek;
+        package = pkgs.buildPackages.prek;
         hooks = {
           treefmt = {
             enable = true;
@@ -18,10 +18,52 @@
           pinact = {
             enable = true;
             name = "pinact";
-            entry = "${lib.getExe pkgs.pinact} run --fix=false --no-api";
+            entry = "${lib.getExe pkgs.buildPackages.pinact} run --fix=false --no-api";
             language = "system";
             files = "^\\.github/workflows/.*\\.ya?ml$";
             after = [ "treefmt" ];
+          };
+          ruff = {
+            enable = true;
+            entry = "${lib.getExe pkgs.buildPackages.ruff} check --no-fix .";
+            language = "system";
+            always_run = true;
+            pass_filenames = false;
+            after = [ "treefmt" ];
+          };
+          ruff-format = {
+            enable = true;
+            entry = "${lib.getExe pkgs.buildPackages.ruff} format --check .";
+            language = "system";
+            always_run = true;
+            pass_filenames = false;
+            after = [ "ruff" ];
+          };
+          ty = {
+            enable = true;
+            entry = "${lib.getExe pkgs.buildPackages.ty} check --project . --python ${lib.getExe pkgs.buildPackages.python3}";
+            language = "system";
+            always_run = true;
+            pass_filenames = false;
+            after = [ "ruff-format" ];
+          };
+          python-compile = {
+            enable = true;
+            name = "Python syntax";
+            entry = lib.getExe (
+              pkgs.buildPackages.writeShellApplication {
+                name = "framework-python-syntax";
+                runtimeInputs = [
+                  pkgs.buildPackages.python3
+                  pkgs.buildPackages.coreutils
+                ];
+                text = builtins.readFile ./scripts/python-syntax.sh;
+              }
+            );
+            language = "system";
+            always_run = true;
+            pass_filenames = false;
+            after = [ "ty" ];
           };
           end-of-file-fixer = {
             enable = true;
@@ -51,7 +93,7 @@
           typos = {
             enable = true;
             # The upstream hook's generated empty [default] table overrides configPath.
-            entry = "${lib.getExe pkgs.typos} --config .typos.toml --force-exclude";
+            entry = "${lib.getExe pkgs.buildPackages.typos} --config .typos.toml --force-exclude";
           };
           zizmor = {
             enable = true;
@@ -60,8 +102,8 @@
           gitleaks = {
             enable = true;
             name = "Gitleaks";
-            entry = "${lib.getExe pkgs.gitleaks} git --pre-commit --staged --redact --no-banner";
-            # The entry supplies the complete command; replace upstream default arguments.
+            entry = "${lib.getExe pkgs.buildPackages.gitleaks} git --pre-commit --staged --redact --no-banner";
+            # The complete entry already supplies the upstream hook arguments.
             args = [ ];
             language = "system";
             always_run = true;
