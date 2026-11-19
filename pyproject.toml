@@ -43,10 +43,22 @@ ban-relative-imports = "all"
 [tool.ruff.lint.flake8-type-checking]
 strict = true
 
+[tool.ruff.lint.per-file-ignores]
+"fuzz/*.py" = [
+  # Assertions signal fuzzer failures; Nix runs from the declared CI environment.
+  "assert",
+  "suspicious-subprocess-import",
+  "subprocess-without-shell-equals-true",
+  "start-process-with-partial-path",
+]
+
 [tool.ruff.format]
 docstring-code-format = true
 line-ending = "lf"
 preview = true
+
+[tool.ty.analysis]
+allowed-unresolved-imports = ["atheris"]
 
 [tool.ty.environment]
 python-version = "3.14"
