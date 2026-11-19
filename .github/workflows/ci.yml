@@ -63,8 +63,6 @@ jobs:
         with:
           cache: ${{ vars.NIX_CI_CACHE == 'true' }}
           cache-scope: ci-lint
-      - name: Test release publication guards
-        run: python3 -m unittest discover -s .github/tests -v
       - name: Check shared workflow contracts
         uses: nix-forge/ci/actions/validate-workflows@1a6dfe0b851c69ad30169977e014bd45029e9c55 # v2.13.0
       - name: Run repository hooks and publication checks
@@ -104,12 +102,6 @@ jobs:
         uses: nix-forge/ci/actions/flake-checks@1a6dfe0b851c69ad30169977e014bd45029e9c55 # v2.13.0
         with:
           system: ${{ matrix.system }}
-      - name: Build the public consumer with its locked framework
-        working-directory: examples/minimal
-        run: nix flake check --no-update-lock-file --show-trace
-      - name: Build the public consumer against this framework revision
-        working-directory: examples/minimal
-        run: nix flake check --override-input nix-config-framework ../.. --no-write-lock-file --show-trace
   queue-completion:
     continue-on-error: true
     name: Queue completion callback

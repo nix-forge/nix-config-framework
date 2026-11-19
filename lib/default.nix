@@ -30,11 +30,14 @@ let
 
   recursiveNixFiles =
     path:
+    let
+      directoryEntries = entries path;
+    in
     concatLists (
       map (
         name:
         let
-          type = (entries path).${name};
+          type = directoryEntries.${name};
           child = path + "/${name}";
         in
         if nixFile name type then
@@ -43,7 +46,7 @@ let
           recursiveNixFiles child
         else
           [ ]
-      ) (attrNames (entries path))
+      ) (attrNames directoryEntries)
     );
 
   aggregate = paths: { imports = paths; };
@@ -52,15 +55,18 @@ let
     root:
     let
       go =
-        path: prefix:
+        path: relativeSegments:
+        let
+          directoryEntries = entries path;
+        in
         concatLists (
           map (
             name:
             let
-              type = (entries path).${name};
+              type = directoryEntries.${name};
               child = path + "/${name}";
               segment = if nixFile name type then removeSuffix ".nix" name else name;
-              key = lib.concatStringsSep "-" (prefix ++ [ segment ]);
+              key = lib.concatStringsSep "-" (relativeSegments ++ [ segment ]);
             in
             if nixFile name type then
               if name == "default.nix" then
@@ -79,10 +85,10 @@ let
                   kind = "directory";
                 }
               ]
-              ++ go child (prefix ++ [ name ])
+              ++ go child (relativeSegments ++ [ name ])
             else
               [ ]
-          ) (attrNames (entries path))
+          ) (attrNames directoryEntries)
         );
     in
     go root [ ];
@@ -159,12 +165,15 @@ let
       modules,
       args,
     }:
+    let
+      targetEntries = entries root;
+    in
     uniqueAttrs (
       lib.concatMap (
         name:
         let
           path = root + "/${name}";
-          type = (entries root).${name};
+          type = targetEntries.${name};
           default = path + "/default.nix";
         in
         if directory name type && pathExists default then
@@ -189,7 +198,7 @@ let
           ]
         else
           [ ]
-      ) (attrNames (entries root))
+      ) (attrNames targetEntries)
     );
 
   targetModules = spec: (spec.modules or [ ]) ++ spec.localModules;

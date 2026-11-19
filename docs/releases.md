@@ -3,7 +3,7 @@
 The framework uses immutable semantic-version source tags in the v0.1.x series.
 Future GitHub source releases must start from a reviewed commit on main after
 the pull request has passed flake checks, dependency review, CodeQL, the DCO
-check, documentation builds, and focused consumer tests.
+check, documentation builds, and library unit tests.
 
 Version-tag creation is restricted to organization administrators, and existing
 version tags cannot be updated or deleted. The `release` environment accepts

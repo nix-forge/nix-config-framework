@@ -14,27 +14,18 @@ let
     inherit root;
   };
 
-  nixosModules = frameworkLib.disjoint (frameworkLib.mkModuleSet (root + "/modules/nixos")) (
-    frameworkLib.mkSharedModuleSet {
-      args = moduleArgs;
-      class = "nixos";
-      root = root + "/modules/shared";
-    }
-  );
-  homeModules = frameworkLib.disjoint (frameworkLib.mkModuleSet (root + "/modules/home")) (
-    frameworkLib.mkSharedModuleSet {
-      args = moduleArgs;
-      class = "homeManager";
-      root = root + "/modules/shared";
-    }
-  );
-  darwinModules = frameworkLib.disjoint (frameworkLib.mkModuleSet (root + "/modules/darwin")) (
-    frameworkLib.mkSharedModuleSet {
-      args = moduleArgs;
-      class = "darwin";
-      root = root + "/modules/shared";
-    }
-  );
+  modulesFor =
+    localClass: sharedClass:
+    frameworkLib.disjoint (frameworkLib.mkModuleSet (root + "/modules/${localClass}")) (
+      frameworkLib.mkSharedModuleSet {
+        args = moduleArgs;
+        class = sharedClass;
+        root = root + "/modules/shared";
+      }
+    );
+  nixosModules = modulesFor "nixos" "nixos";
+  homeModules = modulesFor "home" "homeManager";
+  darwinModules = modulesFor "darwin" "darwin";
 
   homes = frameworkLib.readTargetSpecs {
     root = root + "/homes";

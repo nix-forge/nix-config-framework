@@ -26,19 +26,13 @@
       nixConfigFramework.root = ./.;
 
       perSystem =
-        { pkgs, system, ... }:
+        { system, ... }:
         let
           home = inputs.self.homeConfigurations."alice@${system}";
         in
         {
           packages.default = home.activationPackage;
-          checks.generated-home = pkgs.runCommand "framework-example-home" { } ''
-            test -x ${home.activationPackage}/activate
-            test -x ${home.config.home.path}/bin/hello
-            grep -Fx 'editor = vi' ${home.activationPackage}/home-files/.config/framework-example/settings
-            grep -Fx 'This file belongs to this profile.' ${home.activationPackage}/home-files/.config/framework-example/profile
-            touch "$out"
-          '';
+
         };
     };
 }

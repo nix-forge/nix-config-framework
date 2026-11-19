@@ -22,6 +22,7 @@
             nixd
             nixf-diagnose
             nixfmt
+            nix-unit
             pinact
             prettier
             prek

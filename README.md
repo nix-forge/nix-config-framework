@@ -108,10 +108,12 @@ Intel macOS consumers should pin a nixpkgs release that still supports
 
 ## Tests
 
-`nix flake check` runs the named discovery contracts and integration fixture.
-The discovery check forces the fixture's module assertions as well as checking
-selected outputs. A failed target-name assertion therefore fails evaluation
-without building a Darwin system on Linux.
+`nix flake check` runs static checks and the nix-unit library suite in
+`lib/tests/`. Run `nix build .#checks.x86_64-linux.lib-tests` for the focused
+suite, or `nix-unit --flake '.#libTests'` in the development shell. Cases exercise
+library discovery, selectors and composition; no module or consumer integration
+fixtures run. Module assertions still reject invalid settings during normal
+configuration evaluation.
 
 ## Native and cross builds
 

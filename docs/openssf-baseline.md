@@ -47,7 +47,7 @@ on pull requests and merge-group refs.
 All workflows start with empty default permissions. Jobs grant only the scopes
 they need, checkout does not persist credentials, and actions use full commit
 SHAs. Pull requests and merge groups run flake checks, dependency review,
-CodeQL, documentation builds, and focused tests before protected main can
+CodeQL, documentation builds, and library unit tests before protected main can
 advance.
 
 The normal evidence set is:
@@ -56,7 +56,7 @@ The normal evidence set is:
     nix build .#documentation-site
 
 Changes to discovery, selectors, exported outputs, or compatibility include a
-fixture or consumer test and update public documentation. Never commit
+relevant library unit case and update public documentation. Never commit
 consumer credentials, private paths, or generated secrets.
 
 ## Release and dependency controls

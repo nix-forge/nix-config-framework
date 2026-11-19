@@ -7,21 +7,17 @@ the framework's corresponding inputs to `follows` those inputs, as shown in the
 
 ## What is checked
 
-| Contract | Coverage |
-| --- | --- |
-| Discovery, selectors and target assertions | Framework discovery and integration checks |
-| Embedded Darwin homes and shell registration | Darwin fixture evaluation, including assertions |
-| Standalone public example | Generated home files and activation package on the CI native matrix |
-| Systems in the default matrix | `x86_64-linux`, `aarch64-linux`, `aarch64-darwin` |
-| Other systems or stable Nixpkgs releases | No compatibility promise; test your consumer pins |
-| Activation on a real workstation | The consumer's responsibility; CI builds do not activate personal homes |
+The declared native matrix is `x86_64-linux`, `aarch64-linux` and
+`aarch64-darwin`. CI runs Nix library unit tests, static tooling, documentation
+builds and export-schema validation. Library cases cover discovery, selectors
+and composition. Assertions in modules reject invalid configuration settings.
 
-CI runs the public example with its lock file and also overrides the framework
-input with the revision under test. This separates a reproducible published
-consumer from testing whether framework changes preserve that consumer.
-Inspect the [CI workflow](https://github.com/nix-forge/nix-config-framework/blob/main/.github/workflows/ci.yml) and its actual run results
-before treating a revision as validated. Configured coverage is not a statement
-that every historical revision passed.
+There are no automated consumer or module integration fixtures. The public
+example remains a usable consumer, but building and activating consumer targets
+is the consumer's responsibility. Other systems or stable Nixpkgs releases have
+no compatibility promise. Inspect the
+[CI workflow](https://github.com/nix-forge/nix-config-framework/blob/main/.github/workflows/ci.yml)
+and actual results before treating a revision as checked.
 
 Intel macOS is outside the default matrix. Nixpkgs unstable no longer supports
 it. Supporting it requires a compatible Nixpkgs release and an explicit
@@ -61,7 +57,7 @@ The onboarding work is unreleased until a maintainer publishes it. A release
 should describe changes to selectors, exported outputs, target specifications
 and special arguments, with before-and-after consumer examples for migrations.
 Record the tested input revisions, native build results and known limits.
-Run the minimal consumer against the release candidate before tagging it.
+Record any manual consumer build evidence separately from the library test results.
 
 These are release requirements for future changes, not retroactive guarantees
 about existing tags. The README's `v0.1.0` input example remains a versioned API
