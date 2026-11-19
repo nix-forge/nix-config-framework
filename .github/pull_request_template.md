@@ -13,7 +13,7 @@
 ## Validation
 
 - [ ] I ran the relevant formatter and flake checks.
-- [ ] I tested a representative consumer configuration.
+- [ ] Relevant library unit cases and static checks pass.
 - [ ] Public documentation and generated references are updated when needed.
 - [ ] Security, compatibility, and evaluation-cost implications are documented.
 

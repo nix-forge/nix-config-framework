@@ -44,10 +44,6 @@ ban-relative-imports = "all"
 strict = true
 
 [tool.ruff.lint.per-file-ignores]
-".github/tests/test_release_workflow.py" = [
-  # These portable release fixtures use the standard-library unittest runner.
-  "pytest-unittest-assertion",
-]
 "fuzz/*.py" = [
   # Assertions signal fuzzer failures; Nix runs from the declared CI environment.
   "assert",
@@ -62,7 +58,6 @@ line-ending = "lf"
 preview = true
 
 [tool.ty.analysis]
-# Atheris is installed by the native fuzz action, not portable documentation tooling.
 allowed-unresolved-imports = ["atheris"]
 
 [tool.ty.environment]

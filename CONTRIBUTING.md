@@ -9,22 +9,26 @@ consumer impact, and the compatibility or migration plan. Keep pull requests
 focused. Update the README and reference documentation when a discovery rule,
 option, or exported output changes.
 
-Run `nix flake check` and the focused tests for the area you changed. Include a
-minimal consumer or fixture when changing target discovery, module selection, or
-compatibility behavior.
-
 ## Testing policy
 
-Pull requests and merge groups run flake-lock validation, repository hooks,
-CodeQL, dependency review, documentation checks, and the native framework and
-consumer checks. Run the focused check first, then `nix flake check` and the
-documentation build before requesting review.
+Automated behavior tests cover functions in `lib/` only, using nix-unit's named
+`expr`/`expected` and `expectedError` cases under `lib/tests/`. Run
+`nix build .#checks.x86_64-linux.lib-tests` (replace the system for another
+native platform). The development shell provides `nix-unit --flake '.#libTests'`
+for a focused run.
 
-Every major change to discovery, selectors, exported modules, compatibility,
-or release behavior must add or update an automated test or consumer fixture.
-If an automated test is not practical, record the reason, manual evidence, and
-a follow-up plan in the pull request. Security and dependency findings follow
-the [dependency-management policy](docs/dependency-management.md).
+Other checks are static formatting, lint, syntax, type, export-schema,
+documentation, dependency and security analysis. CI runs those checks and the
+library suite on the declared native matrix. `nix flake check` builds the
+complete declared check set; build the documentation site before review.
+
+Keep assertions validating settings in their owning modules. Do not add
+configuration snapshots, module integration, release-workflow regression or fuzz
+tests. Preserve production input validation and ordinary consumer build outputs.
+Library tests do not establish successful activation or consumer compatibility;
+record native operational evidence separately when needed. Security and
+dependency findings follow the
+[dependency-management policy](docs/dependency-management.md).
 
 Do not commit secrets, generated credentials, or large binary artifacts. Use
 full immutable references for GitHub Actions and preserve the repository's
